@@ -3,18 +3,26 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>app</title>
+    <title>App</title>
+    <link rel="stylesheet" href="/css/index.css">
 </head>
 
 <body>
+    <div class="container">
+        <form id="form">
+            <div class="form-field">
+                <label for="name">Nom</label>
+                <input id="name" name="name" type="text" />
+            </div>
+            <div class="form-field">
+                <label for="name">Prenom</label>
+                <input id="firstname" name="firstname" type="text" />
+            </div>
+            <button class="form-submit">Go</button>
+        </form>
 
-    <div>
-        nom: <input type="text" id="nom" name="nom">
-        prenom: <input type="text" id="prenom" name="prenom">
-        <button onclick="go()">Go</button>
+        <div id="personnes"></div>
     </div>
-
-    <div id="personnes"></div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/index.js"></script>
