@@ -20,7 +20,7 @@ public class Receiver {
     @JmsListener(destination = "${spring-messaging.queue.name}")
     public void receiveMessage(Personne personne) {
         log.info(personne);
-
-        // TODO
+        personne.setSpring("OK");
+        sender.sendMessage(personne);
     }
 }

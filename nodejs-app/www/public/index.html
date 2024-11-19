@@ -9,17 +9,27 @@
 
 <body>
     <div class="container">
+        <h1>Asynchronous communication (Node-Spring)</h1>
         <form id="form">
             <div class="form-field">
-                <label for="name">Nom</label>
+                <label for="name">Name</label>
                 <input id="name" name="name" type="text" />
             </div>
             <div class="form-field">
-                <label for="name">Prenom</label>
+                <label for="name">Firstname</label>
                 <input id="firstname" name="firstname" type="text" />
             </div>
             <button class="form-submit">Go</button>
         </form>
+        <div class="ws-status">
+            <h2>Websocket status</h2>
+            <div class="ws-status-circle-text-container">
+                <div id="circle" class="circle notConnected"></div>
+                <p id="text">Not connected</p>
+            </div>
+
+        </div>
+
 
         <div id="personnes"></div>
     </div>

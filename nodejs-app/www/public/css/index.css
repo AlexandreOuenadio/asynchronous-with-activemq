@@ -23,6 +23,12 @@ body {
     padding: 6rem 0;
 }
 
+
+h1 {
+    margin-bottom: 1.6rem;
+    text-align: center;
+}
+
 #form {
     display: flex;
     flex-direction: column;
@@ -45,4 +51,36 @@ body {
     width: fit-content;
     margin-left: auto;
 
+}
+
+.circle {
+    height: 1.6rem;
+    width: 1.6rem;
+    border: 1px solid black;
+    margin: 1.6rem 0;
+    border-radius: 100%;
+}
+
+.notConnected {
+    background-color: red;
+}
+
+.connected {
+    background-color: greenyellow;
+}
+
+
+.ws-status {
+    display: flex;
+    flex-direction: column;
+    border: 1px dashed black;
+    padding: 1.6rem;
+    margin: 1.6rem 0;
+    gap: 0.8rem;
+}
+
+.ws-status-circle-text-container {
+    display: flex;
+    gap: 1.6rem;
+    align-items: center;
 }

@@ -1,34 +1,41 @@
 import stompit from "stompit"
 
+
+const connectOptions = {
+    'host': 'localhost',
+    'port': 61613,
+    'connectHeaders': {
+        'host': '/',
+        'login': 'myuser',
+        'passcode': 'mypwd',
+        'heart-beat': '5000,5000'
+    }
+};
+
+const sendHeaders = {
+    'destination': 'fr.cpe.spring-app.in',
+    'content-type': 'text/plain'
+};
+
+const subscribeHeaders = {
+    'destination': 'fr.cpe.nodejs-app.in',
+    'ack': 'client-individual'
+};
+
 class ActiveMqService {
 
-    static connectOptions = {
-        'host': 'localhost',
-        'port': 61613,
-        'connectHeaders': {
-            'host': '/',
-            'login': 'myuser',
-            'passcode': 'mypwd',
-            'heart-beat': '5000,5000'
-        }
-    };
 
-    static sendHeaders = {
-        'destination': 'fr.cpe.spring-app.in',
-        'content-type': 'text/plain'
-    };
+    constructor(connectOptions, sendHeaders, subscribeHeaders) {
+        this.connectOptions = connectOptions;
+        this.sendHeaders = sendHeaders;
+        this.subscribeHeaders = subscribeHeaders;
 
-    static subscribeHeaders = {
-        'destination': 'fr.cpe.spring-app.in',
-        'ack': 'client-individual'
-    };
-
-    constructor() { }
+    }
 
     postMessage(jsonString, callback) {
         stompit.connect(connectOptions, (error, client) => {
 
-            if (error) return console.error('STOMPIT connect error ' + error.message);
+            if (error) return callback(new Error('STOMPIT connect error ' + error.message));
 
             //EMIT
             const frame = client.send(sendHeaders);
@@ -38,12 +45,18 @@ class ActiveMqService {
             //RECEIVE
             client.subscribe(subscribeHeaders, function (error, message) {
 
-                if (error) {
-                    console.log('STOMPIT subscribe error ' + error.message);
-                    return;
-                }
+                if (error) return callback(new Error('STOMPIT subscribe error ' + error.message));
 
-                message.readString('utf-8', callback);
+                message.readString('utf-8', (error, body) => {
+
+                    if (error) return callback(new Error('read message error ' + error.message));
+
+                    callback(null, body);
+
+                    client.ack(message);
+
+                    client.disconnect();
+                });
             });
 
 
@@ -57,4 +70,4 @@ class ActiveMqService {
 }
 
 
-export default new ActiveMqService();
+export default new ActiveMqService(connectOptions, sendHeaders, subscribeHeaders);

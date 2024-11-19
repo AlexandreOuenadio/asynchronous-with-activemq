@@ -4,19 +4,12 @@ import { Server } from 'socket.io';
 import morgan from 'morgan';
 import MessageRouter from "./routers/MessageRouter.js"
 
-
 const app = express();
 const server = createServer(app);
-const io = new Server(server);
-
 
 // ------------ WEBSOCKETS ------------ 
-io.on('connection', (socket) => {
-    console.log('a user connected');
-    socket.on("hello", (msg) => console.log(msg))
-});
-
-
+const io = new Server(server);
+app.set("io", io);
 
 // ------------ REST API ------------ 
 

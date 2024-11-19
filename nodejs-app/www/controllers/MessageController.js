@@ -1,19 +1,32 @@
 import ActiveMqService from "../services/ActiveMqService.js";
 
 class MessageController {
-    #activeMqService = null;
     constructor(activeMqService) {
-        this.#activeMqService = activeMqService
+        this.activeMqService = activeMqService
     }
 
 
     postMessage(req, res) {
 
-        this.#activeMqService.postMessage(req.body, (error, responseJsonString) => {
-            if (error) return console.log('STOMPIT read message error ' + error.message);
-            console.log("envoyé et reçu")
-            // res.end(responseJsonString);
-        })
+        const message = JSON.stringify(req.body);
+
+        this.activeMqService
+            .postMessage(message,
+                (error, responseMessage) => {
+
+                    if (error) return res.status(500).json({ erreur: error.message });
+
+                    const io = req.app.get("io");
+
+                    const personne = JSON.parse(responseMessage);
+                    personne.node = "OK";
+
+                    io.emit("notify", personne);
+                    res.status(200).end();
+                }
+            )
+
+
 
 
 
